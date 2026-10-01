@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\MatryoshkaFolder]
+@="MatryoshkaFolder"
+"Icon"="python.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\MatryoshkaFolder\command]
+@="pythonw \"C:\\Users\\ferre\\VS Code Projects\\MatryoshkaFolder\\MatryoshkaFolder.py\" \"%V\""

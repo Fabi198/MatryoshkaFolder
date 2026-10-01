@@ -29,28 +29,35 @@ Podés descargar el instalador ejecutable más reciente directamente desde la se
 ### Opción 2: Ejecutar desde el Código Fuente (Desarrolladores)
 Cloná el repositorio:
 
-Bash
+## Bash
 git clone https://github.com/TU_USUARIO/MatryoshkaFolder.git
 cd MatryoshkaFolder
+
 Instalá las dependencias necesarias:
 
-Bash
 pip install customtkinter send2trash pyinstaller
-Ejecutá la aplicación:
 
-Bash
+
+## Ejecutá la aplicación:
+
 python MatryoshkaFolder.py
-🛠️ Tecnologías Utilizadas
-Python como lenguaje principal.
 
-CustomTkinter y Tkinter (ttk) para la interfaz gráfica de usuario.
 
-Send2Trash para la gestión segura de archivos hacia la papelera de reciclaje del sistema operativo.
+## 🛠️ Tecnologías Utilizadas
 
-PyInstaller e Inno Setup para la compilación y empaquetado del instalador.
+* **Python** como lenguaje principal.
+* **CustomTkinter** y **Tkinter (ttk)** para la interfaz gráfica de usuario.
+* **Send2Trash** para la gestión segura de archivos hacia la papelera de reciclaje del sistema operativo.
+* **PyInstaller** e **Inno Setup** para la compilación y empaquetado del instalador.
 
-🤝 Contribuciones
+---
+
+## 🤝 Contribuciones
+
 ¡Las contribuciones, reportes de bugs y sugerencias son totalmente bienvenidos! Si querés sumar mejoras, podés hacer un fork del repositorio y mandar un pull request.
 
-📄 Licencia
-Este proyecto está bajo la licencia MIT. Consultá el archivo LICENSE para más detalles.
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT. Consultá el archivo `LICENSE` para más detalles.

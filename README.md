@@ -8,7 +8,7 @@
 
 | Vista General del Escaneo | Navegación Interna y Despliegue | Menú Contextual (Papelera) |
 | :---: | :---: | :---: |
-| ![Vista General](images/Screenshot_1.png) | ![Navegación Interna](images/Screenshot_2.png) | ![Menú Papelera](images/Screenshot_3.png) |
+| ![Vista General](images/Screenshot1.png) | ![Navegación Interna](images/Screenshot2.png) | ![Menú Papelera](images/Screenshot3.png) |
 
 ---
 

@@ -117,10 +117,18 @@ class MatryoshkaApp(ctk.CTk):
             font=("Segoe UI", 10, "bold"),
             borderwidth=0
         )
-        style.map("Treeview", background=[('selected', select_bg)], foreground=[('selected', '#ffffff')])
+        
+        # Forzamos que las filas seleccionadas con el tag usen el color anaranjado suave
+        style.map("Treeview", 
+            background=[('selected', select_bg)], 
+            foreground=[('selected', '#ffb366')]
+        )
         
         columns = ("tipo", "tamano", "porcentaje", "barra")
         self.tree = ttk.Treeview(self.table_frame, columns=columns, selectmode="browse")
+        
+        # Definición del tag para el texto anaranjado suave
+        self.tree.tag_configure("focused_folder", foreground="#ffb366")
         
         self.tree.heading("#0", text="Nombre")
         self.tree.heading("tipo", text="Tipo")
@@ -134,13 +142,14 @@ class MatryoshkaApp(ctk.CTk):
         self.tree.column("porcentaje", width=80, anchor="e")
         self.tree.column("barra", width=260, anchor="e")
         
-        # Eventos: Doble clic para navegar / Clic derecho para menú contextual
+        # Eventos
         self.tree.bind("<Double-1>", self.on_item_double_click)
         self.tree.bind("<Button-3>", self.show_context_menu)
+        self.tree.bind("<<TreeviewSelect>>", self.on_tree_select)
         
         # Menú contextual de Clic Derecho
         self.context_menu = tk.Menu(self.tree, tearoff=0)
-        self.context_menu.add_command(label="🗑️️ Enviar a la papelera", command=self.delete_selected_item)
+        self.context_menu.add_command(label="🗑 Enviar a la papelera", command=self.delete_selected_item)
         
         self.scrollbar = ctk.CTkScrollbar(self.table_frame, orientation="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
@@ -216,6 +225,28 @@ class MatryoshkaApp(ctk.CTk):
             if item['is_dir'] and item['children']:
                 self.populate_tree(node_id, item['children'], item['size'], current_bar_len)
 
+    def on_tree_select(self, event):
+        """Limpia el foco anterior en todo el árbol y se lo asigna únicamente al elemento seleccionado actual."""
+        for item in self.tree.get_children(""):
+            self.clear_focus_recursive(item)
+            
+        selected_items = self.tree.selection()
+        if selected_items:
+            current_focus = selected_items[0]
+            current_tags = list(self.tree.item(current_focus, "tags"))
+            if "focused_folder" not in current_tags:
+                current_tags.append("focused_folder")
+            self.tree.item(current_focus, tags=current_tags)
+
+    def clear_focus_recursive(self, item):
+        current_tags = list(self.tree.item(item, "tags"))
+        if "focused_folder" in current_tags:
+            current_tags.remove("focused_folder")
+            self.tree.item(item, tags=current_tags)
+            
+        for child in self.tree.get_children(item):
+            self.clear_focus_recursive(child)
+
     def on_item_double_click(self, event):
         selected_item = self.tree.focus()
         if not selected_item:
@@ -227,7 +258,6 @@ class MatryoshkaApp(ctk.CTk):
             self.load_path(item_data['path'])
 
     def show_context_menu(self, event):
-        # Seleccionar la fila sobre la que se hizo clic derecho
         item_id = self.tree.identify_row(event.y)
         if item_id:
             self.tree.selection_set(item_id)
@@ -246,7 +276,6 @@ class MatryoshkaApp(ctk.CTk):
         path_to_delete = item_data['path']
         name = item_data['name']
         
-        # Cuadro de confirmación nativo antes de tirar a la papelera
         confirm = messagebox.askyesno(
             "Enviar a la papelera", 
             f"¿Estás seguro de que querés enviar '{name}' a la papelera de reciclaje?"
@@ -255,7 +284,6 @@ class MatryoshkaApp(ctk.CTk):
         if confirm:
             try:
                 send2trash(path_to_delete)
-                # Recargar la vista actual para reflejar el espacio liberado y el archivo borrado
                 self.load_path(self.current_path)
             except Exception as e:
                 messagebox.showerror("Error", f"No se pudo eliminar el archivo:\n{e}")
